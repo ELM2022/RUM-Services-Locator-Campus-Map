@@ -1,1 +1,1 @@
-<?php include_once("AzureMapDemo.html"); ?>
+<?php include_once("Test.html"); ?>
