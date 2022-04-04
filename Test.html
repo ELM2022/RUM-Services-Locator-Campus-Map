@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <title>Indoor Maps App</title>
+    
+    <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/indoor/0.1/atlas-indoor.min.css" type="text/css"/>
+
+    <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
+    <script src="https://atlas.microsoft.com/sdk/javascript/indoor/0.1/atlas-indoor.min.js"></script>
+      
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      #map-id {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map-id"></div>
+    <script>
+      const subscriptionKey = "a3xqTvEnM8WdNT2zXfivmWrlqL_DGijo4xnaV7iTxW0";
+      const tilesetId = "f87d303d-31e8-a62a-80a9-b57f930f773b";
+
+      const map = new atlas.Map("map-id", {
+        //use your facility's location
+        center: [-67.14087905894849, 18.20936769515622],
+        //or, you can use bounds: [# west, # south, # east, # north] and replace # with your Map bounds
+        style: "grayscale_dark",
+        view: 'Auto',
+        authOptions: { 
+            authType: 'subscriptionKey',
+            subscriptionKey: subscriptionKey
+        },
+        zoom: 19,
+      });
+
+      const levelControl = new atlas.control.LevelControl({
+        position: "top-right",
+      });
+
+      const indoorManager = new atlas.indoor.IndoorManager(map, {
+        levelControl: levelControl, //level picker
+        tilesetId: tilesetId,
+      });
+
+      map.events.add("levelchanged", indoorManager, (eventData) => {
+        //put code that runs after a level has been changed
+        console.log("The level has changed:", eventData);
+      });
+
+      map.events.add("facilitychanged", indoorManager, (eventData) => {
+        //put code that runs after a facility has been changed
+        console.log("The facility has changed:", eventData);
+      });
+    </script>
+  </body>
+</html>
