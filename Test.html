@@ -7,9 +7,19 @@
     
     <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css" />
     <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/indoor/0.1/atlas-indoor.min.css" type="text/css"/>
+    <link rel="stylesheet" href="Test.css"/>
 
     <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
     <script src="https://atlas.microsoft.com/sdk/javascript/indoor/0.1/atlas-indoor.min.js"></script>
+    <script src="./handlers/officeHandler.js"></script>
+
+    <script>
+      function popupStyle(office) {
+        return `<div style="padding:10px"><h3>Celis</h3><p>Lorem Ipsum</p><h3>Horario</h3><p>LMWJV: XX:XX-XX:XX</p><button>Ver Mas</button></div>`;
+      };
+
+
+    </script>
       
     <style>
       html,
@@ -31,19 +41,92 @@
     <div id="map-id"></div>
     <script>
       const subscriptionKey = "0y1GC5TNvoFAYrxLTNdpWMH3NcNq7Rs6D0WdaHqaR0Q";
-      const tilesetId = "29a66fca-5fe8-a2f2-b756-03a0f1e71ef6";
+      const tilesetId = "f87d303d-31e8-a62a-80a9-b57f930f773b";
 
       const map = new atlas.Map("map-id", {
         //use your facility's location
         center: [-67.14087905894849, 18.20936769515622],
         //or, you can use bounds: [# west, # south, # east, # north] and replace # with your Map bounds
-        style: "grayscale_dark",
+        style: "satellite_road_labels",
         view: 'Auto',
         authOptions: { 
             authType: 'subscriptionKey',
             subscriptionKey: subscriptionKey
         },
-        zoom: 14,
+        zoom: 18,
+        maxZoom: 18,
+      });
+
+      var celis = new atlas.HtmlMarker({
+        position: [-67.14087905894849, 18.20936769515622],
+        htmlContent: `<div><div class='pin bounce'><img class='pinImage' src='pawIcon.png'></img></div><div class='pulse'></div></div>`,
+        popup: new atlas.Popup({
+          content: '<div style="padding:10px"><h3>Celis</h3><p>Lorem Ipsum</p><h3>Horario</h3><p>LMWJV: XX:XX-XX:XX</p><button>Ver Mas</button></div>',
+          pixeloffset: [0,-30]
+        })
+      });
+
+      var centroDeEstudiantes = new atlas.HtmlMarker({
+        htmlContent: "<div><div class='pin bounce'><img class='pinImage' src='pawIcon.png'></img></div><div class='pulse'></div></div>",
+        position: [-67.1411841, 18.2101991],
+        popup: new atlas.Popup({
+          content: '<div style="padding:10px">Centro de Estudiantes</div>',
+          pixeloffset: [0,-30]
+        })
+      });
+
+      var adem = new atlas.HtmlMarker({
+        htmlContent: "<div><div class='pin bounce'><img class='pinImage' src='pawIcon.png'></img></div><div class='pulse'></div></div>",
+        position: [-67.1420406978991, 18.2175795219455],
+        popup: new atlas.Popup({
+          content: '<div style="padding:10px">Administracion de Empresas</div>',
+          pixeloffset: [0,-30]
+        })
+      });
+
+      var serviciosMedicos = new atlas.HtmlMarker({
+        htmlContent: "<div><div class='pin bounce'><img class='pinImage' src='pawIcon.png'></img></div><div class='pulse'></div></div>",
+        position: [-67.1422061174153, 18.2104891218052],
+        popup: new atlas.Popup({
+          content: '<div style="padding:10px">Servicios Medicos</div>',
+          pixeloffset: [0,-30]
+        })
+      });
+
+      var terrats = new atlas.HtmlMarker({
+        htmlContent: "<div><div class='pin bounce'><img class='pinImage' src='pawIcon.png'></img></div><div class='pulse'></div></div>",
+        position: [-67.1390478210385, 18.2104084254421], 
+        popup: new atlas.Popup({
+          content: '<div style="padding:10px">Edificio Terrats</div>',
+          pixeloffset: [0,-30]
+        })
+      })
+
+      var transito = new atlas.HtmlMarker({
+        htmlContent: "<div><div class='pin bounce'><img class='pinImage' src='pawIcon.png'></img></div><div class='pulse'></div></div>",
+        position: [-67.1421152957704, 18.2131670832037],
+        popup: new atlas.Popup({
+          content: '<div style="padding:10px">Transito y Vigilancia</div>',
+          pixeloffset: [0,-30]
+        })
+      });
+
+      var guardia = new atlas.HtmlMarker({
+        htmlContent: "<div><div class='pin bounce'><img class='pinImage' src='pawIcon.png'></img></div><div class='pulse'></div></div>",
+        position: [-67.141885722232, 18.2132536705792],
+        popup: new atlas.Popup({
+          content: '<div style="padding:10px">Guardia Universitaria</div>',
+          pixeloffset: [0,-30]
+        })
+      });
+
+      var asistenciaEconomica = new atlas.HtmlMarker({
+        htmlContent: "<div><div class='pin bounce'><img class='pinImage' src='pawIcon.png'></img></div><div class='pulse'></div></div>",
+        position: [-67.1411650161407, 18.2088481930268],
+        popup: new atlas.Popup({
+          content: '<div style="padding:10px">Asistencia Economica</div>',
+          pixeloffset: [0,-30]
+        })
       });
 
       const levelControl = new atlas.control.LevelControl({
@@ -60,10 +143,60 @@
         console.log("The level has changed:", eventData);
       });
 
+      map.markers.add(celis);
+      map.markers.add(centroDeEstudiantes);
+      map.markers.add(adem);
+      map.markers.add(serviciosMedicos);
+      map.markers.add(transito);
+      map.markers.add(terrats);
+      map.markers.add(guardia);
+      map.markers.add(asistenciaEconomica);
+
+      map.events.add('click', celis, () => {
+        celis.togglePopup();
+      });
+
+      map.events.add('click', centroDeEstudiantes, () => {
+        centroDeEstudiantes.togglePopup();
+      });
+
+      map.events.add('click', guardia, () => {
+        guardia.togglePopup();
+      });
+
+      map.events.add('click', adem, () => {
+        adem.togglePopup();
+      });
+
+      map.events.add('click', serviciosMedicos, () => {
+        serviciosMedicos.togglePopup();
+      });
+
+      map.events.add('click', transito, () => {
+        transito.togglePopup();
+      });
+
+      map.events.add('click', terrats, () => {
+        terrats.togglePopup();
+      });
+
+      map.events.add('click', asistenciaEconomica, () => {
+        asistenciaEconomica.togglePopup();
+      });
+
       map.events.add("facilitychanged", indoorManager, (eventData) => {
         //put code that runs after a facility has been changed
         console.log("The facility has changed:", eventData);
       });
+
+
+//       fetch('https://rumsl-backend.herokuapp.com/offices')
+//       .then((response) => {
+//         console.log(response);
+//       })
+//       .catch((err) => {
+//         err.response;
+//       })
     </script>
   </body>
 </html>
